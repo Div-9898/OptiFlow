@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useRouter, usePathname } from 'next/navigation';
 import { 
   Bell, 
   Moon, 
@@ -10,6 +11,7 @@ import {
   Search,
   Settings,
   User,
+  ArrowLeft,
 } from 'lucide-react';
 import { useDashboardStore } from '@/stores/dashboardStore';
 import { cn } from '@/lib/utils';
@@ -21,11 +23,30 @@ interface TopBarProps {
 
 export default function TopBar({ isConnected }: TopBarProps) {
   const { isDarkMode, toggleDarkMode, lastUpdated } = useDashboardStore();
+  const router = useRouter();
+  const pathname = usePathname();
+  
+  // Show back button on all pages except home
+  const showBackButton = pathname !== '/';
 
   return (
     <header className="h-16 flex items-center justify-between px-6 bg-dark-800/50 backdrop-blur-sm border-b border-dark-600">
       {/* Left section */}
       <div className="flex items-center gap-4">
+        {/* Back Button */}
+        {showBackButton && (
+          <motion.button
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            onClick={() => router.back()}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-dark-600 transition-all duration-200 group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+            <span className="text-sm font-medium">Back</span>
+          </motion.button>
+        )}
+        
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />

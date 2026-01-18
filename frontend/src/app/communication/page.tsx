@@ -12,6 +12,7 @@ import {
   Volume2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import PageLayout from '@/components/dashboard/PageLayout';
 
 export default function CommunicationHubPage() {
   const [message, setMessage] = useState('');
@@ -45,6 +46,7 @@ export default function CommunicationHubPage() {
   };
 
   return (
+    <PageLayout>
     <div className="min-h-screen bg-dark-900 p-6">
       {/* Header */}
       <motion.div
@@ -257,5 +259,6 @@ export default function CommunicationHubPage() {
         </motion.div>
       </div>
     </div>
+    </PageLayout>
   );
 }

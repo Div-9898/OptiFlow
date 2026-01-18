@@ -128,6 +128,12 @@ class OptimizationRequest(BaseModel):
     depot_location: Dict[str, float]
     algorithm: str = "ortools"
     time_limit_seconds: int = 30
+    # Genetic Algorithm params
+    population_size: int = 50
+    mutation_rate: float = 0.1
+    # Simulated Annealing params
+    initial_temp: float = 10000.0
+    cooling_rate: float = 0.995
 
 
 class OptimizationProgress(BaseModel):

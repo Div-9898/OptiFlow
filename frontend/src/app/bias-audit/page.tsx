@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell } from 'recharts';
 import { cn } from '@/lib/utils';
+import PageLayout from '@/components/dashboard/PageLayout';
 
 export default function BiasAuditPage() {
   const [selectedMetric, setSelectedMetric] = useState('demographic');
@@ -36,6 +37,7 @@ export default function BiasAuditPage() {
   const isGiniFair = giniCoefficient < 0.3;
 
   return (
+    <PageLayout>
     <div className="min-h-screen bg-dark-900 p-6">
       {/* Header */}
       <motion.div
@@ -282,5 +284,6 @@ export default function BiasAuditPage() {
         </div>
       </motion.div>
     </div>
+    </PageLayout>
   );
 }

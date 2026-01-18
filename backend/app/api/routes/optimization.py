@@ -31,13 +31,18 @@ async def run_optimization_async(run_id: str, request: OptimizationRequest):
                 'currentCost': current_cost,
                 'bestCost': best_cost,
                 'temperature': temperature,
-                'currentRoutes': routes
+                'currentRoutes': routes,
+                'algorithm': request.algorithm
             })
         
-        # Execute optimization
+        # Execute optimization with algorithm-specific params
         result = await solver.solve_async(
             time_limit=request.time_limit_seconds,
-            progress_callback=progress_callback
+            progress_callback=progress_callback,
+            population_size=request.population_size,
+            mutation_rate=request.mutation_rate,
+            initial_temp=request.initial_temp,
+            cooling_rate=request.cooling_rate
         )
         
         # Store result
@@ -49,8 +54,9 @@ async def run_optimization_async(run_id: str, request: OptimizationRequest):
         await sio.emit('optimization:complete', {
             'runId': run_id,
             'routes': result['routes'],
-            'savingsPercent': result['savings_percent'],
-            'totalIterations': result['iterations']
+            'savingsPercent': result.get('savings_percent', 0),
+            'totalIterations': result.get('iterations', 0),
+            'algorithm': request.algorithm
         })
         
     except Exception as e:

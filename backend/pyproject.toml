@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "logistics-ai-platform"
+version = "1.0.0"
+description = "AI-Powered Logistics Operations Platform with Real-Time Visualization"
+authors = ["Logistics AI Team"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+# FastAPI and Server
+fastapi = "^0.110.0"
+uvicorn = {extras = ["standard"], version = "^0.27.1"}
+python-socketio = "^5.11.0"
+python-multipart = "^0.0.9"
+
+# Database
+sqlalchemy = "^2.0.27"
+asyncpg = "^0.29.0"
+psycopg2-binary = "^2.9.9"
+redis = "^5.0.1"
+neo4j = "^5.18.0"
+
+# Data Validation
+pydantic = "^2.6.1"
+pydantic-settings = "^2.2.1"
+
+# ML and Optimization
+torch = "^2.2.0"
+numpy = "^1.26.4"
+scipy = "^1.12.0"
+scikit-learn = "^1.4.0"
+ortools = "^9.9.3963"
+networkx = "^3.2.1"
+
+# AI and LLM
+google-generativeai = "^0.4.0"
+
+# Fairness and Explainability
+fairlearn = "^0.10.0"
+
+# Data Processing
+pandas = "^2.2.0"
+
+# Utilities
+python-dotenv = "^1.0.1"
+httpx = "^0.26.0"
+aiofiles = "^23.2.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-asyncio = "^0.23.4"
+pytest-cov = "^4.1.0"
+black = "^24.1.0"
+isort = "^5.13.0"
+flake8 = "^7.0.0"
+mypy = "^1.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true

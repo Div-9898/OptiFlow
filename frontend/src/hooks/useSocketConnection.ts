@@ -67,7 +67,7 @@ export function useSocketConnection() {
         completedDeliveries: data.completedDeliveries || 0,
         totalDeliveries: data.totalDeliveries || 150,
         onTimeRate: data.onTimeRate || 0,
-        fleetRiskScore: data.fleetRiskScore || 0,
+        averageRiskScore: data.fleetRiskScore || data.averageRiskScore || 0,
       });
       setLastUpdated(new Date().toISOString());
     },
@@ -91,13 +91,12 @@ export function useSocketConnection() {
   const handleRiskAlert = useCallback(
     (data: RiskAlert) => {
       addAlert({
-        id: `alert-${Date.now()}`,
-        type: 'risk',
-        severity: data.riskLevel === 'critical' ? 'high' : data.riskLevel === 'high' ? 'medium' : 'low',
-        description: data.recommendation,
-        affectedGroup: data.vehicleId,
+        id: data.id || `alert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        vehicleId: data.vehicleId,
+        riskLevel: data.riskLevel,
+        factors: data.factors || [],
         recommendation: data.recommendation,
-        timestamp: data.timestamp,
+        timestamp: data.timestamp || new Date().toISOString(),
       });
     },
     [addAlert]

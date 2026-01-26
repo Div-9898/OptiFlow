@@ -1,0 +1,29 @@
+# =============================================================================
+# Logistics AI Platform - Environment Configuration
+# =============================================================================
+
+# Mapbox API Token
+# Get your token from: https://account.mapbox.com/access-tokens/
+MAPBOX_TOKEN="Your-api-key"
+
+# Google Gemini API Key
+# Get your key from: https://ai.google.dev/
+GEMINI_API_KEY="Your-api-Key"
+
+# Database Configuration
+POSTGRES_DB=logistics
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DATABASE_URL=postgresql://postgres:postgres@postgres:5432/logistics
+
+# Redis Configuration
+REDIS_URL=redis://redis:6379
+
+# Neo4j Configuration
+NEO4J_URL=bolt://neo4j:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=password123
+
+# Application Settings
+DEBUG=true
+LOG_LEVEL=INFO

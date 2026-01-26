@@ -39,6 +39,12 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import PageLayout from '@/components/dashboard/PageLayout';
+import {
+  PolicyKPIDashboard,
+  TemplateGauges,
+  DocumentFeed,
+  ComplianceIndicator
+} from '@/components/policy';
 
 // Types
 interface Template {
@@ -1118,6 +1124,18 @@ Quarterly business review for **Q1 ${new Date().getFullYear()}**. This comprehen
           </div>
         </motion.div>
 
+        {/* KPI Dashboard */}
+        <div className="mb-4">
+          <PolicyKPIDashboard
+            documentsGenerated={documentHistory.length + 47}
+            templatesUsed={new Set(documentHistory.map(d => d.templateId)).size + 6}
+            exportCount={23}
+            avgGenerationTime={2.3}
+            complianceCoverage={94}
+            qualityScore={8.7}
+          />
+        </div>
+
         <div className="grid grid-cols-12 gap-6">
           {/* Template Selection */}
           <motion.div
@@ -1466,6 +1484,32 @@ Quarterly business review for **Q1 ${new Date().getFullYear()}**. This comprehen
               </div>
             </div>
           </motion.div>
+        </div>
+
+        {/* Bottom Row - Template Gauges, Document Feed, Compliance */}
+        <div className="grid grid-cols-12 gap-6 mt-6">
+          <div className="col-span-4">
+            <TemplateGauges
+              operational={82}
+              safety={78}
+              ethics={85}
+              sustainability={71}
+            />
+          </div>
+          <div className="col-span-4">
+            <DocumentFeed />
+          </div>
+          <div className="col-span-4">
+            <ComplianceIndicator
+              regulations={[
+                { name: 'GDPR', status: 'compliant', score: 98, lastAudit: '2 days ago' },
+                { name: 'ISO 27001', status: 'compliant', score: 95, lastAudit: '1 week ago' },
+                { name: 'SOC 2', status: 'review', score: 87, lastAudit: '3 days ago' },
+                { name: 'HIPAA', status: 'pending', score: 72, lastAudit: 'Pending' }
+              ]}
+              overallScore={88}
+            />
+          </div>
         </div>
       </div>
     </PageLayout>

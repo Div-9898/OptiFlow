@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture - Logistics AI Platform</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        .arch-diagram {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            margin: var(--space-2xl) 0;
+            overflow-x: auto;
+        }
+        .arch-diagram pre {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.4;
+            color: var(--text-primary);
+            white-space: pre;
+        }
+        .layer-section {
+            margin-bottom: var(--space-3xl);
+        }
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-xl);
+        }
+        .layer-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
+            color: white;
+            font-size: 1.5rem;
+        }
+        .layer-info h3 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+        .layer-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .tech-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+        }
+        .tech-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            transition: var(--transition-base);
+        }
+        .tech-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        .tech-card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+        .tech-card-header i {
+            font-size: 2rem;
+        }
+        .tech-card-header h4 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+        .tech-card-header span {
+            font-size: 0.8rem;
+            color: var(--text-tertiary);
+        }
+        .tech-card p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .data-flow-section {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            margin: var(--space-2xl) 0;
+        }
+        .flow-item {
+            display: flex;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .flow-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .flow-number {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+        }
+        .flow-content h4 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+        .flow-content p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .flow-content code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+        .project-structure {
+            background: #1e1e2e;
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            margin: var(--space-2xl) 0;
+            overflow-x: auto;
+        }
+        .project-structure pre {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #cdd6f4;
+            margin: 0;
+        }
+        .project-structure .folder { color: #89b4fa; }
+        .project-structure .file { color: #a6e3a1; }
+        .project-structure .comment { color: #6c7086; }
+        .interactive-arch {
+            height: 500px;
+            background: var(--gradient-hero);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            position: relative;
+            overflow: hidden;
+        }
+        .arch-canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-truck-fast"></i>
+                </div>
+                <span>Logistics AI</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="getting-started.html" class="nav-link">Getting Started</a></li>
+                <li><a href="api-reference.html" class="nav-link">API Reference</a></li>
+                <li><a href="architecture.html" class="nav-link">Architecture</a></li>
+                <li><a href="https://github.com/Div-9898/AIO_Final_Project" target="_blank" class="nav-link nav-github">
+                    <i class="fab fa-github"></i> GitHub
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <div class="page-badge">
+                <i class="fas fa-sitemap"></i>
+                System Design
+            </div>
+            <h1 class="page-title">Platform <span class="gradient-text">Architecture</span></h1>
+            <p class="page-subtitle">
+                A deep dive into the microservices architecture, data flow patterns,
+                and technology choices that power the Logistics AI Platform.
+            </p>
+        </div>
+    </section>
+
+    <!-- Architecture Overview -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Overview</span>
+                <h2 class="section-title">System Architecture</h2>
+                <p class="section-subtitle">
+                    Three-tier architecture with real-time communication layer
+                </p>
+            </div>
+
+            <div class="arch-diagram">
+<pre>
+                                    ┌──────────────────────────────────────────────────────────────────────┐
+                                    │                           CLIENT LAYER                               │
+                                    │  ┌────────────────────────────────────────────────────────────────┐  │
+                                    │  │                      Next.js 14 Frontend                       │  │
+                                    │  │  ┌─────────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐  │  │
+                                    │  │  │  Mapbox GL  │  │  Zustand  │  │ Socket.IO │  │  TanStack │  │  │
+                                    │  │  │  + Deck.gl  │  │   Store   │  │  Client   │  │   Query   │  │  │
+                                    │  │  └─────────────┘  └───────────┘  └───────────┘  └───────────┘  │  │
+                                    │  └────────────────────────────────────────────────────────────────┘  │
+                                    └─────────────────────────────────┬────────────────────────────────────┘
+                                                                      │
+                                                            HTTP / WebSocket
+                                                                      │
+                                    ┌─────────────────────────────────▼────────────────────────────────────┐
+                                    │                           API GATEWAY                                 │
+                                    │  ┌────────────────────────────────────────────────────────────────┐  │
+                                    │  │                   FastAPI + Socket.IO Server                   │  │
+                                    │  │  ┌──────────┐ ┌──────────┐ ┌─────────┐ ┌─────────┐ ┌────────┐  │  │
+                                    │  │  │ Vehicles │ │ Optimize │ │  Risk   │ │ Ethics  │ │ Policy │  │  │
+                                    │  │  │   API    │ │   API    │ │  API    │ │   API   │ │  API   │  │  │
+                                    │  │  └──────────┘ └──────────┘ └─────────┘ └─────────┘ └────────┘  │  │
+                                    │  │  ┌────────────┐ ┌────────────┐ ┌─────────────┐                 │  │
+                                    │  │  │  Fairness  │ │ Stakeholder│ │Communication│                 │  │
+                                    │  │  │    API     │ │    API     │ │     API     │                 │  │
+                                    │  │  └────────────┘ └────────────┘ └─────────────┘                 │  │
+                                    │  └────────────────────────────────────────────────────────────────┘  │
+                                    └────────┬─────────────────┬─────────────────┬─────────────────┬───────┘
+                                             │                 │                 │                 │
+                                    ┌────────▼────────┐ ┌──────▼──────┐ ┌────────▼────────┐ ┌──────▼──────┐
+                                    │   PostgreSQL    │ │    Redis    │ │      Neo4j      │ │   Gemini    │
+                                    │   (Primary DB)  │ │  (Cache &   │ │  (Graph DB for  │ │  (LLM for   │
+                                    │                 │ │   Pub/Sub)  │ │  Stakeholders)  │ │  AI Tasks)  │
+                                    └─────────────────┘ └─────────────┘ └─────────────────┘ └─────────────┘
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Layer -->
+    <section class="content-section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="layer-section">
+                <div class="layer-header">
+                    <div class="layer-icon">
+                        <i class="fab fa-react"></i>
+                    </div>
+                    <div class="layer-info">
+                        <h3>Client Layer</h3>
+                        <p>Next.js 14 with App Router for server-side rendering and optimal performance</p>
+                    </div>
+                </div>
+
+                <div class="tech-cards">
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fab fa-react" style="color: #61dafb;"></i>
+                            <div>
+                                <h4>Next.js 14</h4>
+                                <span>React Framework</span>
+                            </div>
+                        </div>
+                        <p>Server-side rendering, App Router, and React Server Components for optimal performance and SEO.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-map" style="color: #4264fb;"></i>
+                            <div>
+                                <h4>Mapbox GL + Deck.gl</h4>
+                                <span>Mapping & Visualization</span>
+                            </div>
+                        </div>
+                        <p>WebGL-powered interactive maps with 3D terrain, buildings, and high-performance data visualization for 1000+ vehicles.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-cube" style="color: #764abc;"></i>
+                            <div>
+                                <h4>Zustand</h4>
+                                <span>State Management</span>
+                            </div>
+                        </div>
+                        <p>Lightweight, fast state management with minimal boilerplate. Perfect for real-time data synchronization.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-plug" style="color: #10b981;"></i>
+                            <div>
+                                <h4>Socket.IO Client</h4>
+                                <span>Real-time Communication</span>
+                            </div>
+                        </div>
+                        <p>Bidirectional event-based communication for live vehicle tracking, alerts, and messaging.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Layer -->
+    <section class="content-section">
+        <div class="container">
+            <div class="layer-section">
+                <div class="layer-header">
+                    <div class="layer-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <div class="layer-info">
+                        <h3>API Gateway</h3>
+                        <p>FastAPI with async support for high-throughput request handling</p>
+                    </div>
+                </div>
+
+                <div class="tech-cards">
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fab fa-python" style="color: #009688;"></i>
+                            <div>
+                                <h4>FastAPI</h4>
+                                <span>Web Framework</span>
+                            </div>
+                        </div>
+                        <p>Modern, fast Python web framework with automatic OpenAPI documentation and async/await support.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-route" style="color: #6366f1;"></i>
+                            <div>
+                                <h4>Google OR-Tools</h4>
+                                <span>Optimization Engine</span>
+                            </div>
+                        </div>
+                        <p>Industry-standard Vehicle Routing Problem solver with constraint programming and multiple optimization strategies.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-brain" style="color: #f59e0b;"></i>
+                            <div>
+                                <h4>PyTorch + SHAP</h4>
+                                <span>ML & Explainability</span>
+                            </div>
+                        </div>
+                        <p>Machine learning models for risk prediction with SHAP-based explainability for transparent decision-making.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-balance-scale" style="color: #8b5cf6;"></i>
+                            <div>
+                                <h4>Fairlearn</h4>
+                                <span>Fairness & Bias</span>
+                            </div>
+                        </div>
+                        <p>Algorithmic fairness assessment with demographic parity metrics and automated bias detection.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Layer -->
+    <section class="content-section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="layer-section">
+                <div class="layer-header">
+                    <div class="layer-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="layer-info">
+                        <h3>Data Layer</h3>
+                        <p>Polyglot persistence with specialized databases for each use case</p>
+                    </div>
+                </div>
+
+                <div class="tech-cards">
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-database" style="color: #336791;"></i>
+                            <div>
+                                <h4>PostgreSQL 16</h4>
+                                <span>Primary Database</span>
+                            </div>
+                        </div>
+                        <p>ACID-compliant relational database for operational data, vehicles, routes, and historical records.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-bolt" style="color: #dc382d;"></i>
+                            <div>
+                                <h4>Redis 7</h4>
+                                <span>Cache & Pub/Sub</span>
+                            </div>
+                        </div>
+                        <p>In-memory data store for caching, session management, and real-time message brokering via pub/sub.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-diagram-project" style="color: #008cc1;"></i>
+                            <div>
+                                <h4>Neo4j 5.18</h4>
+                                <span>Graph Database</span>
+                            </div>
+                        </div>
+                        <p>Native graph database for stakeholder relationships, influence mapping, and network analysis.</p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-header">
+                            <i class="fas fa-brain" style="color: #4285f4;"></i>
+                            <div>
+                                <h4>Google Gemini</h4>
+                                <span>AI Services</span>
+                            </div>
+                        </div>
+                        <p>Large language model integration for ethical scenario generation, policy creation, and natural language processing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Flow -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Data Flow</span>
+                <h2 class="section-title">How Data Moves</h2>
+                <p class="section-subtitle">Understanding the real-time data pipelines</p>
+            </div>
+
+            <div class="data-flow-section">
+                <div class="flow-item">
+                    <div class="flow-number">1</div>
+                    <div class="flow-content">
+                        <h4>Real-Time Vehicle Updates</h4>
+                        <p>Vehicle simulation generates position data → <code>Redis Pub/Sub</code> → <code>Socket.IO Server</code> → <code>Frontend Map</code></p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">2</div>
+                    <div class="flow-content">
+                        <h4>Route Optimization</h4>
+                        <p>User configures constraints → <code>FastAPI</code> → <code>OR-Tools Solver</code> → Streaming progress via WebSocket → Final optimized routes</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">3</div>
+                    <div class="flow-content">
+                        <h4>Risk Assessment</h4>
+                        <p>Sensor data (weather, traffic, vehicle health) → <code>PyTorch ML Models</code> → Risk scores → Alerts via WebSocket</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">4</div>
+                    <div class="flow-content">
+                        <h4>Sentiment Analysis</h4>
+                        <p>Customer message → <code>NLP Processing</code> → Sentiment classification → Dashboard metrics update</p>
+                    </div>
+                </div>
+
+                <div class="flow-item">
+                    <div class="flow-number">5</div>
+                    <div class="flow-content">
+                        <h4>Stakeholder Analysis</h4>
+                        <p>Relationship data → <code>Neo4j Graph</code> → Cypher queries → Force-directed visualization in frontend</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Structure -->
+    <section class="content-section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Codebase</span>
+                <h2 class="section-title">Project Structure</h2>
+                <p class="section-subtitle">Organized for scalability and maintainability</p>
+            </div>
+
+            <div class="project-structure">
+<pre>
+<span class="folder">AIO_Final_Project/</span>
+│
+├── <span class="folder">frontend/</span>                      <span class="comment"># Next.js 14 Application</span>
+│   ├── <span class="folder">src/</span>
+│   │   ├── <span class="folder">app/</span>                   <span class="comment"># App Router pages</span>
+│   │   │   ├── <span class="file">page.tsx</span>           <span class="comment"># Dashboard (home)</span>
+│   │   │   ├── <span class="folder">bias-audit/</span>        <span class="comment"># Fairness analysis</span>
+│   │   │   ├── <span class="folder">communication/</span>     <span class="comment"># Messaging hub</span>
+│   │   │   ├── <span class="folder">customer-updates/</span>  <span class="comment"># Sentiment tracking</span>
+│   │   │   ├── <span class="folder">ethics/</span>            <span class="comment"># Ethical simulator</span>
+│   │   │   ├── <span class="folder">policy/</span>            <span class="comment"># Policy advisor</span>
+│   │   │   ├── <span class="folder">risk-center/</span>       <span class="comment"># Risk dashboard</span>
+│   │   │   ├── <span class="folder">stakeholders/</span>      <span class="comment"># Network graph</span>
+│   │   │   └── <span class="folder">vrp-arena/</span>         <span class="comment"># Route optimization</span>
+│   │   ├── <span class="folder">components/</span>            <span class="comment"># Reusable React components</span>
+│   │   ├── <span class="folder">hooks/</span>                 <span class="comment"># Custom React hooks</span>
+│   │   ├── <span class="folder">lib/</span>                   <span class="comment"># Utility libraries</span>
+│   │   ├── <span class="folder">stores/</span>                <span class="comment"># Zustand state stores</span>
+│   │   └── <span class="folder">types/</span>                 <span class="comment"># TypeScript definitions</span>
+│   ├── <span class="file">Dockerfile</span>
+│   └── <span class="file">package.json</span>
+│
+├── <span class="folder">backend/</span>                       <span class="comment"># FastAPI Application</span>
+│   ├── <span class="folder">app/</span>
+│   │   ├── <span class="folder">api/</span>
+│   │   │   └── <span class="folder">routes/</span>            <span class="comment"># API endpoint handlers</span>
+│   │   │       ├── <span class="file">vehicles.py</span>    <span class="comment"># Vehicle management</span>
+│   │   │       ├── <span class="file">optimization.py</span> <span class="comment"># Route optimization</span>
+│   │   │       ├── <span class="file">risk.py</span>        <span class="comment"># Risk assessment</span>
+│   │   │       ├── <span class="file">ethics.py</span>      <span class="comment"># Ethical simulation</span>
+│   │   │       ├── <span class="file">fairness.py</span>    <span class="comment"># Bias auditing</span>
+│   │   │       ├── <span class="file">policy.py</span>      <span class="comment"># Policy management</span>
+│   │   │       ├── <span class="file">stakeholders.py</span> <span class="comment"># Network analysis</span>
+│   │   │       └── <span class="file">communication.py</span> <span class="comment"># Messaging</span>
+│   │   ├── <span class="folder">core/</span>                  <span class="comment"># Business logic</span>
+│   │   │   ├── <span class="folder">ethics/</span>            <span class="comment"># Ethical evaluation</span>
+│   │   │   ├── <span class="folder">fairness/</span>          <span class="comment"># Bias detection</span>
+│   │   │   ├── <span class="folder">ml/</span>                <span class="comment"># ML models</span>
+│   │   │   ├── <span class="folder">optimization/</span>      <span class="comment"># VRP solver</span>
+│   │   │   ├── <span class="folder">risk/</span>              <span class="comment"># Risk scoring</span>
+│   │   │   └── <span class="folder">stakeholders/</span>      <span class="comment"># Graph analysis</span>
+│   │   ├── <span class="folder">db/</span>                    <span class="comment"># Database layer</span>
+│   │   ├── <span class="folder">models/</span>                <span class="comment"># Pydantic models</span>
+│   │   └── <span class="folder">services/</span>              <span class="comment"># External integrations</span>
+│   ├── <span class="file">Dockerfile</span>
+│   └── <span class="file">requirements.txt</span>
+│
+├── <span class="folder">simulation/</span>                    <span class="comment"># Vehicle simulation engine</span>
+├── <span class="folder">docs/</span>                          <span class="comment"># Documentation (you are here!)</span>
+├── <span class="file">docker-compose.yml</span>             <span class="comment"># Service orchestration</span>
+├── <span class="file">start.sh</span>                       <span class="comment"># Management script</span>
+└── <span class="file">README.md</span>
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="content-section" style="background: var(--gradient-hero); text-align: center;">
+        <div class="container">
+            <h2 class="section-title">Ready to Explore the Code?</h2>
+            <p class="section-subtitle mb-xl">
+                Dive into the codebase, contribute, or deploy your own instance.
+            </p>
+            <div class="hero-buttons" style="justify-content: center;">
+                <a href="https://github.com/Div-9898/AIO_Final_Project" target="_blank" class="btn btn-primary">
+                    <i class="fab fa-github"></i>
+                    View on GitHub
+                </a>
+                <a href="getting-started.html" class="btn btn-secondary">
+                    <i class="fas fa-rocket"></i>
+                    Get Started
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 Logistics AI Platform. Built by <a href="https://github.com/Div-9898" target="_blank">Divyansh</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

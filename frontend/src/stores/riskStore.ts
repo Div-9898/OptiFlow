@@ -92,7 +92,7 @@ export const useRiskStore = create<RiskStore>((set, get) => ({
 
   getCriticalAlerts: () => {
     return get().activeAlerts.filter(
-      (a) => a.severity === 'high'
+      (a) => a.riskLevel === 'critical' || a.riskLevel === 'high'
     );
   },
 }));

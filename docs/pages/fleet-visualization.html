@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Fleet Visualization - Logistics AI Platform</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-truck-fast"></i>
+                </div>
+                <span>Logistics AI</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="getting-started.html" class="nav-link">Getting Started</a></li>
+                <li><a href="api-reference.html" class="nav-link">API Reference</a></li>
+                <li><a href="architecture.html" class="nav-link">Architecture</a></li>
+                <li><a href="https://github.com/Div-9898/AIO_Final_Project" target="_blank" class="nav-link nav-github">
+                    <i class="fab fa-github"></i> GitHub
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <canvas class="page-hero-canvas" id="fleet-hero-canvas"></canvas>
+        <div class="page-hero-content">
+            <div class="page-badge">
+                <i class="fas fa-map-location-dot"></i>
+                Core Feature
+            </div>
+            <h1 class="page-title">Real-Time Fleet <span class="gradient-text">Visualization</span></h1>
+            <p class="page-subtitle">
+                Track every vehicle in your fleet with sub-second precision using interactive 3D maps,
+                live position updates, and high-performance rendering.
+            </p>
+        </div>
+    </section>
+
+    <!-- Interactive Map Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-grid">
+                <div class="content-text">
+                    <h2>Interactive Mapbox GL Maps</h2>
+                    <p>
+                        Experience your fleet like never before with our Mapbox GL integration.
+                        Navigate through your operational area with smooth pan, zoom, and rotation controls,
+                        all rendered in beautiful 3D with terrain visualization.
+                    </p>
+                    <ul class="content-list">
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>3D Terrain Rendering</strong> - Visualize elevation and topography for better route understanding</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Custom Map Styles</strong> - Switch between light, dark, satellite, and custom themes</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Building Footprints</strong> - 3D buildings in urban areas for precise delivery visualization</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Traffic Layer</strong> - Real-time traffic conditions overlaid on routes</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-visual">
+                    <canvas class="visual-canvas" id="map-visual"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Tracking Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-grid reverse">
+                <div class="content-text">
+                    <h2>Live Vehicle Tracking</h2>
+                    <p>
+                        Every vehicle in your fleet sends position updates via WebSocket,
+                        ensuring you always see the most current location. Animated transitions
+                        make movement smooth and easy to follow.
+                    </p>
+                    <ul class="content-list">
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Sub-Second Updates</strong> - Position data refreshed every 1000ms via WebSocket</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Animated Transitions</strong> - Smooth movement between position updates</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Status Indicators</strong> - Color-coded markers showing vehicle status (active, idle, issue)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Click-to-Details</strong> - Click any vehicle for detailed information panel</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-visual">
+                    <canvas class="visual-canvas" id="tracking-visual"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- High Performance Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-grid">
+                <div class="content-text">
+                    <h2>High-Performance Rendering</h2>
+                    <p>
+                        Using Deck.gl's WebGL-powered rendering engine, we can display
+                        thousands of vehicles simultaneously without compromising performance
+                        or user experience.
+                    </p>
+                    <ul class="content-list">
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>1000+ Vehicles</strong> - Render massive fleets at 60 FPS</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>GPU Acceleration</strong> - WebGL-based rendering for maximum performance</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Level of Detail</strong> - Automatic detail reduction when zoomed out</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Clustering</strong> - Intelligent grouping of nearby vehicles at low zoom levels</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-visual">
+                    <canvas class="visual-canvas" id="performance-visual"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Route Visualization -->
+    <section class="content-section">
+        <div class="container">
+            <div class="content-grid reverse">
+                <div class="content-text">
+                    <h2>Route Visualization</h2>
+                    <p>
+                        See the planned routes for each vehicle with color-coded segments
+                        indicating completion status, delays, and estimated time of arrival.
+                    </p>
+                    <ul class="content-list">
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Animated Routes</strong> - Watch vehicles progress along their routes in real-time</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Color Coding</strong> - Green (on-time), yellow (slight delay), red (significant delay)</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>Stop Markers</strong> - Clear indication of delivery/pickup locations</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check"></i>
+                            <span><strong>ETA Display</strong> - Estimated arrival time at each stop</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content-visual">
+                    <canvas class="visual-canvas" id="route-visual"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Example -->
+    <section class="demo-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Implementation</span>
+                <h2 class="section-title">WebSocket Integration</h2>
+                <p class="section-subtitle">
+                    Simple code to connect and receive real-time vehicle updates
+                </p>
+            </div>
+
+            <div class="demo-container">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <span class="btn-close"></span>
+                        <span class="btn-minimize"></span>
+                        <span class="btn-maximize"></span>
+                    </div>
+                    <span class="terminal-title">fleet-tracking.tsx</span>
+                </div>
+                <div class="code-block">
+<pre><span class="comment">// Connect to WebSocket for real-time vehicle updates</span>
+<span class="keyword">import</span> { useEffect, useState } <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">import</span> { io } <span class="keyword">from</span> <span class="string">'socket.io-client'</span>;
+
+<span class="keyword">export function</span> <span class="function">useVehicleTracking</span>() {
+  <span class="keyword">const</span> [vehicles, setVehicles] = <span class="function">useState</span>&lt;Vehicle[]&gt;([]);
+
+  <span class="function">useEffect</span>(() => {
+    <span class="keyword">const</span> socket = <span class="function">io</span>(<span class="string">'http://localhost:8000'</span>);
+
+    socket.<span class="function">on</span>(<span class="string">'vehicle:update'</span>, (data: VehicleUpdate) => {
+      <span class="function">setVehicles</span>(prev =>
+        prev.<span class="function">map</span>(v =>
+          v.id === data.id
+            ? { ...v, <span class="property">lat</span>: data.lat, <span class="property">lng</span>: data.lng, <span class="property">status</span>: data.status }
+            : v
+        )
+      );
+    });
+
+    socket.<span class="function">on</span>(<span class="string">'vehicle:status'</span>, (data: StatusUpdate) => {
+      <span class="comment">// Handle status changes (active, idle, issue)</span>
+      <span class="function">console</span>.log(<span class="string">`Vehicle ${data.id}: ${data.status}`</span>);
+    });
+
+    <span class="keyword">return</span> () => socket.<span class="function">disconnect</span>();
+  }, []);
+
+  <span class="keyword">return</span> vehicles;
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Technology</span>
+                <h2 class="section-title">Powered By</h2>
+            </div>
+
+            <div class="features-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="feature-card" style="cursor: default;">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-map"></i>
+                        </div>
+                        <h3>Mapbox GL JS</h3>
+                        <p>Industry-leading interactive mapping library with 3D terrain and building support.</p>
+                    </div>
+                </div>
+                <div class="feature-card" style="cursor: default;">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3>Deck.gl</h3>
+                        <p>WebGL-powered visualization framework for high-performance data rendering.</p>
+                    </div>
+                </div>
+                <div class="feature-card" style="cursor: default;">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h3>Socket.IO</h3>
+                        <p>Real-time bidirectional event-based communication for live updates.</p>
+                    </div>
+                </div>
+                <div class="feature-card" style="cursor: default;">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Redis Pub/Sub</h3>
+                        <p>High-throughput message broker for distributing vehicle updates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="content-section" style="background: var(--gradient-hero); text-align: center;">
+        <div class="container">
+            <h2 class="section-title">Ready to Track Your Fleet?</h2>
+            <p class="section-subtitle mb-xl">
+                Get started with the Logistics AI Platform and visualize your entire fleet in real-time.
+            </p>
+            <div class="hero-buttons" style="justify-content: center;">
+                <a href="getting-started.html" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    Get Started
+                </a>
+                <a href="api-reference.html" class="btn btn-secondary">
+                    <i class="fas fa-code"></i>
+                    View API Docs
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 Logistics AI Platform. Built by <a href="https://github.com/Div-9898" target="_blank">Divyansh</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Initialize page-specific visualizations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Map visual
+            const mapContainer = document.getElementById('map-visual');
+            if (mapContainer) {
+                initMapVisualization(mapContainer.parentElement);
+            }
+
+            // Tracking visual
+            const trackingContainer = document.getElementById('tracking-visual');
+            if (trackingContainer) {
+                initTrackingVisualization(trackingContainer.parentElement);
+            }
+
+            // Performance visual
+            const perfContainer = document.getElementById('performance-visual');
+            if (perfContainer) {
+                initPerformanceVisualization(perfContainer.parentElement);
+            }
+
+            // Route visual
+            const routeContainer = document.getElementById('route-visual');
+            if (routeContainer) {
+                initRouteVisualization(routeContainer.parentElement);
+            }
+        });
+
+        function initMapVisualization(container) {
+            // Remove the placeholder canvas
+            container.innerHTML = '';
+
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'absolute';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            container.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = container.offsetWidth || 400;
+                canvas.height = container.offsetHeight || 300;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            let time = 0;
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                time += 0.02;
+
+                // Draw grid
+                ctx.strokeStyle = 'rgba(99, 102, 241, 0.1)';
+                ctx.lineWidth = 1;
+                for (let x = 0; x < canvas.width; x += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < canvas.height; y += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+
+                // Draw terrain-like shapes
+                ctx.fillStyle = 'rgba(99, 102, 241, 0.1)';
+                for (let i = 0; i < 5; i++) {
+                    const x = canvas.width * (0.2 + i * 0.15);
+                    const y = canvas.height * 0.5 + Math.sin(time + i) * 20;
+                    const size = 30 + Math.sin(time * 0.5 + i) * 10;
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Draw location markers
+                const markers = [
+                    { x: 0.3, y: 0.4 },
+                    { x: 0.6, y: 0.3 },
+                    { x: 0.5, y: 0.6 },
+                    { x: 0.7, y: 0.5 },
+                ];
+
+                markers.forEach((m, i) => {
+                    const x = canvas.width * m.x;
+                    const y = canvas.height * m.y + Math.sin(time + i) * 5;
+
+                    // Ping effect
+                    const pingSize = 10 + (time * 10 + i * 5) % 30;
+                    ctx.beginPath();
+                    ctx.arc(x, y, pingSize, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(99, 102, 241, ${0.5 - pingSize / 60})`;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // Marker
+                    ctx.beginPath();
+                    ctx.arc(x, y, 8, 0, Math.PI * 2);
+                    ctx.fillStyle = '#6366f1';
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        function initTrackingVisualization(container) {
+            // Remove the placeholder canvas
+            container.innerHTML = '';
+
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'absolute';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            container.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = container.offsetWidth || 400;
+                canvas.height = container.offsetHeight || 300;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const vehicles = [];
+            for (let i = 0; i < 6; i++) {
+                vehicles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    targetX: Math.random() * canvas.width,
+                    targetY: Math.random() * canvas.height,
+                    color: ['#10b981', '#f59e0b', '#6366f1'][Math.floor(Math.random() * 3)]
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                vehicles.forEach(v => {
+                    // Move towards target
+                    v.x += (v.targetX - v.x) * 0.02;
+                    v.y += (v.targetY - v.y) * 0.02;
+
+                    // New target when reached
+                    if (Math.abs(v.x - v.targetX) < 5 && Math.abs(v.y - v.targetY) < 5) {
+                        v.targetX = Math.random() * canvas.width;
+                        v.targetY = Math.random() * canvas.height;
+                    }
+
+                    // Trail
+                    const gradient = ctx.createLinearGradient(v.x - 20, v.y, v.x, v.y);
+                    gradient.addColorStop(0, 'transparent');
+                    gradient.addColorStop(1, v.color + '60');
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(v.x - 20, v.y);
+                    ctx.lineTo(v.x, v.y);
+                    ctx.stroke();
+
+                    // Vehicle
+                    ctx.beginPath();
+                    ctx.arc(v.x, v.y, 8, 0, Math.PI * 2);
+                    ctx.fillStyle = v.color;
+                    ctx.fill();
+
+                    // Glow
+                    ctx.beginPath();
+                    ctx.arc(v.x, v.y, 15, 0, Math.PI * 2);
+                    ctx.fillStyle = v.color + '30';
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        function initPerformanceVisualization(container) {
+            // Remove the placeholder canvas
+            container.innerHTML = '';
+
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'absolute';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            container.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = container.offsetWidth || 400;
+                canvas.height = container.offsetHeight || 300;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    size: 2 + Math.random() * 3
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(99, 102, 241, 0.6)';
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        function initRouteVisualization(container) {
+            // Remove the placeholder canvas
+            container.innerHTML = '';
+
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'absolute';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            container.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = container.offsetWidth || 400;
+                canvas.height = container.offsetHeight || 300;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const stops = [
+                { x: 0.1, y: 0.5 },
+                { x: 0.3, y: 0.3 },
+                { x: 0.5, y: 0.6 },
+                { x: 0.7, y: 0.4 },
+                { x: 0.9, y: 0.5 }
+            ];
+
+            let progress = 0;
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw route
+                ctx.beginPath();
+                ctx.moveTo(stops[0].x * canvas.width, stops[0].y * canvas.height);
+                stops.forEach(s => {
+                    ctx.lineTo(s.x * canvas.width, s.y * canvas.height);
+                });
+                ctx.strokeStyle = 'rgba(99, 102, 241, 0.3)';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+
+                // Draw completed route
+                const completedStops = Math.floor(progress * (stops.length - 1));
+                ctx.beginPath();
+                ctx.moveTo(stops[0].x * canvas.width, stops[0].y * canvas.height);
+                for (let i = 1; i <= completedStops; i++) {
+                    ctx.lineTo(stops[i].x * canvas.width, stops[i].y * canvas.height);
+                }
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+
+                // Draw stops
+                stops.forEach((s, i) => {
+                    const x = s.x * canvas.width;
+                    const y = s.y * canvas.height;
+                    const completed = i <= completedStops;
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, 10, 0, Math.PI * 2);
+                    ctx.fillStyle = completed ? '#10b981' : 'rgba(99, 102, 241, 0.3)';
+                    ctx.fill();
+
+                    if (i === 0 || i === stops.length - 1) {
+                        ctx.beginPath();
+                        ctx.arc(x, y, 15, 0, Math.PI * 2);
+                        ctx.strokeStyle = completed ? '#10b981' : '#6366f1';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    }
+                });
+
+                // Draw vehicle
+                const segmentProgress = (progress * (stops.length - 1)) % 1;
+                const currentSegment = Math.floor(progress * (stops.length - 1));
+                if (currentSegment < stops.length - 1) {
+                    const start = stops[currentSegment];
+                    const end = stops[currentSegment + 1];
+                    const vx = start.x + (end.x - start.x) * segmentProgress;
+                    const vy = start.y + (end.y - start.y) * segmentProgress;
+
+                    ctx.beginPath();
+                    ctx.arc(vx * canvas.width, vy * canvas.height, 12, 0, Math.PI * 2);
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.fill();
+                }
+
+                progress += 0.003;
+                if (progress >= 1) progress = 0;
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+    </script>
+</body>
+</html>

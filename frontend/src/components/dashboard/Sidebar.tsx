@@ -15,6 +15,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Truck,
+  Zap,
+  Bell,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useDashboardStore, ModuleType } from '@/stores/dashboardStore';
@@ -25,9 +27,10 @@ interface SidebarProps {
 }
 
 const modules = [
-  { id: 'overview', label: 'Overview', icon: LayoutDashboard, path: '/' },
+  { id: 'overview', label: 'Command Center', icon: Zap, path: '/' },
   { id: 'vrp-arena', label: 'VRP Arena', icon: Route, path: '/vrp-arena' },
   { id: 'risk-center', label: 'Risk Center', icon: AlertTriangle, path: '/risk-center' },
+  { id: 'customer-updates', label: 'Customer Updates', icon: Bell, path: '/customer-updates' },
   { id: 'communication', label: 'Communication', icon: MessageSquare, path: '/communication' },
   { id: 'bias-audit', label: 'Bias Audit', icon: Scale, path: '/bias-audit' },
   { id: 'ethics', label: 'Ethics Lab', icon: Brain, path: '/ethics' },

@@ -82,7 +82,8 @@ export const onEvent = <K extends keyof SocketEvents>(
   callback: (data: SocketEvents[K]) => void
 ): void => {
   const s = getSocket();
-  s.on(event, callback as (...args: unknown[]) => void);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  s.on(event as string, callback as any);
 };
 
 // Remove event listener
@@ -92,8 +93,9 @@ export const offEvent = <K extends keyof SocketEvents>(
 ): void => {
   const s = getSocket();
   if (callback) {
-    s.off(event, callback as (...args: unknown[]) => void);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    s.off(event as string, callback as any);
   } else {
-    s.off(event);
+    s.off(event as string);
   }
 };

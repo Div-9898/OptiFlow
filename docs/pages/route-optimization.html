@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Route Optimization - Logistics AI Platform</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <div class="logo-icon"><i class="fas fa-truck-fast"></i></div>
+                <span>Logistics AI</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="getting-started.html" class="nav-link">Getting Started</a></li>
+                <li><a href="api-reference.html" class="nav-link">API Reference</a></li>
+                <li><a href="architecture.html" class="nav-link">Architecture</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <div class="page-badge"><i class="fas fa-route"></i> VRP Arena</div>
+            <h1 class="page-title">AI Route <span class="gradient-text">Optimization</span></h1>
+            <p class="page-subtitle">Solve complex Vehicle Routing Problems with Google OR-Tools, visualize optimization in real-time, and export optimized routes.</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="content-grid">
+                <div class="content-text">
+                    <h2>Vehicle Routing Problem Solver</h2>
+                    <p>Our VRP Arena uses Google OR-Tools to solve complex routing problems with multiple vehicles, capacity constraints, time windows, and driver shift limits.</p>
+                    <ul class="content-list">
+                        <li><i class="fas fa-check"></i><span><strong>Multiple Strategies</strong> - Path Cheapest Arc, Savings Algorithm, Christofides, and more</span></li>
+                        <li><i class="fas fa-check"></i><span><strong>Real-time Visualization</strong> - Watch the algorithm optimize routes live</span></li>
+                        <li><i class="fas fa-check"></i><span><strong>Constraint Handling</strong> - Capacity, time windows, driver shifts</span></li>
+                        <li><i class="fas fa-check"></i><span><strong>Multi-depot Support</strong> - Optimize across multiple warehouses</span></li>
+                    </ul>
+                </div>
+                <div class="content-visual" style="background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.1)); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-route" style="font-size: 8rem; color: var(--primary); opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Optimization Strategies</h2>
+            </div>
+            <div class="features-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="feature-card" style="cursor: default;">
+                    <div class="feature-content">
+                        <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Path Cheapest Arc</h3>
+                        <p>Fast heuristic that builds routes by always selecting the cheapest next destination.</p>
+                    </div>
+                </div>
+                <div class="feature-card" style="cursor: default;">
+                    <div class="feature-content">
+                        <div class="feature-icon"><i class="fas fa-piggy-bank"></i></div>
+                        <h3>Savings Algorithm</h3>
+                        <p>Classic Clarke-Wright algorithm that merges routes to maximize distance savings.</p>
+                    </div>
+                </div>
+                <div class="feature-card" style="cursor: default;">
+                    <div class="feature-content">
+                        <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                        <h3>Guided Local Search</h3>
+                        <p>Metaheuristic that escapes local optima through penalty-guided exploration.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" style="background: var(--gradient-hero); text-align: center;">
+        <div class="container">
+            <h2 class="section-title">Ready to Optimize Your Routes?</h2>
+            <div class="hero-buttons" style="justify-content: center; margin-top: 2rem;">
+                <a href="getting-started.html" class="btn btn-primary"><i class="fas fa-rocket"></i> Get Started</a>
+                <a href="api-reference.html#optimization" class="btn btn-secondary"><i class="fas fa-code"></i> API Docs</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 Logistics AI Platform. Built by <a href="https://github.com/Div-9898" target="_blank">Divyansh</a></p>
+            </div>
+        </div>
+    </footer>
+    <script src="../js/main.js"></script>
+</body>
+</html>

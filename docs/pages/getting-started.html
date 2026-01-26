@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Logistics AI Platform</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        .guide-section {
+            padding: 4rem 0;
+        }
+        .guide-section:nth-child(even) {
+            background: var(--bg-secondary);
+        }
+        .guide-card {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            padding: var(--space-2xl);
+            margin-bottom: var(--space-xl);
+            box-shadow: var(--shadow-card);
+        }
+        .guide-card h3 {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: var(--space-lg);
+        }
+        .guide-card h3 .step-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+        }
+        .code-container {
+            background: #1e1e2e;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin: var(--space-lg) 0;
+        }
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+            background: #181825;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .code-filename {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+        .code-copy {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: rgba(255,255,255,0.6);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition-fast);
+        }
+        .code-copy:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        .code-body {
+            padding: var(--space-lg);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #cdd6f4;
+            overflow-x: auto;
+        }
+        .code-body .comment { color: #6c7086; }
+        .code-body .command { color: #a6e3a1; }
+        .code-body .flag { color: #89b4fa; }
+        .code-body .string { color: #f9e2af; }
+        .prereq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-xl) 0;
+        }
+        .prereq-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-lg);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+        }
+        .prereq-item i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        .prereq-item h4 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+        .prereq-item p {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+        }
+        .env-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space-lg) 0;
+        }
+        .env-table th,
+        .env-table td {
+            padding: var(--space-md);
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .env-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .env-table td {
+            font-size: 0.95rem;
+        }
+        .env-table code {
+            background: var(--bg-secondary);
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+        .required-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #fef2f2;
+            color: #dc2626;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+        }
+        .optional-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #f0fdf4;
+            color: #16a34a;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+        }
+        .command-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-md);
+            margin: var(--space-xl) 0;
+        }
+        .command-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+        }
+        .command-item code {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--primary);
+            background: white;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+        }
+        .command-item span {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .access-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--space-lg);
+            margin: var(--space-xl) 0;
+        }
+        .access-item {
+            padding: var(--space-lg);
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            transition: var(--transition-base);
+        }
+        .access-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        .access-item i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: var(--space-md);
+        }
+        .access-item h4 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+        }
+        .access-item a {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+        .troubleshoot-item {
+            padding: var(--space-lg);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-md);
+        }
+        .troubleshoot-item h4 {
+            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: var(--space-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .troubleshoot-item h4 i {
+            color: var(--accent-amber);
+        }
+        .troubleshoot-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-truck-fast"></i>
+                </div>
+                <span>Logistics AI</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../index.html#features" class="nav-link">Features</a></li>
+                <li><a href="getting-started.html" class="nav-link">Getting Started</a></li>
+                <li><a href="api-reference.html" class="nav-link">API Reference</a></li>
+                <li><a href="architecture.html" class="nav-link">Architecture</a></li>
+                <li><a href="https://github.com/Div-9898/AIO_Final_Project" target="_blank" class="nav-link nav-github">
+                    <i class="fab fa-github"></i> GitHub
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <div class="page-badge">
+                <i class="fas fa-rocket"></i>
+                Quick Start Guide
+            </div>
+            <h1 class="page-title">Getting <span class="gradient-text">Started</span></h1>
+            <p class="page-subtitle">
+                Get the Logistics AI Platform running locally in minutes with Docker.
+                Follow this step-by-step guide to set up your development environment.
+            </p>
+        </div>
+    </section>
+
+    <!-- Prerequisites -->
+    <section class="guide-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Step 0</span>
+                <h2 class="section-title">Prerequisites</h2>
+                <p class="section-subtitle">Make sure you have these tools installed before proceeding</p>
+            </div>
+
+            <div class="prereq-grid">
+                <div class="prereq-item">
+                    <i class="fab fa-docker"></i>
+                    <div>
+                        <h4>Docker Desktop</h4>
+                        <p>Version 20.10 or higher</p>
+                    </div>
+                </div>
+                <div class="prereq-item">
+                    <i class="fab fa-docker"></i>
+                    <div>
+                        <h4>Docker Compose</h4>
+                        <p>Version 2.0 or higher</p>
+                    </div>
+                </div>
+                <div class="prereq-item">
+                    <i class="fab fa-git-alt"></i>
+                    <div>
+                        <h4>Git</h4>
+                        <p>Version 2.30 or higher</p>
+                    </div>
+                </div>
+                <div class="prereq-item">
+                    <i class="fas fa-memory"></i>
+                    <div>
+                        <h4>System Resources</h4>
+                        <p>8GB RAM minimum, 16GB recommended</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guide-card">
+                <h3>
+                    <i class="fas fa-key"></i>
+                    Required API Keys
+                </h3>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+                    You'll need to obtain these API keys before starting:
+                </p>
+                <div class="prereq-grid">
+                    <div class="prereq-item">
+                        <i class="fas fa-map"></i>
+                        <div>
+                            <h4>Mapbox Token</h4>
+                            <p>For interactive maps</p>
+                            <a href="https://mapbox.com" target="_blank" style="color: var(--primary); font-size: 0.85rem;">Get free token →</a>
+                        </div>
+                    </div>
+                    <div class="prereq-item">
+                        <i class="fas fa-brain"></i>
+                        <div>
+                            <h4>Gemini API Key</h4>
+                            <p>For AI features</p>
+                            <a href="https://ai.google.dev" target="_blank" style="color: var(--primary); font-size: 0.85rem;">Get free key →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step 1: Clone -->
+    <section class="guide-section">
+        <div class="container">
+            <div class="guide-card">
+                <h3>
+                    <span class="step-num">1</span>
+                    Clone the Repository
+                </h3>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+                    Start by cloning the project repository to your local machine:
+                </p>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-filename">Terminal</span>
+                        <button class="code-copy" onclick="copyCode(this)">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="code-body">
+<span class="comment"># Clone the repository</span>
+<span class="command">git clone</span> https://github.com/Div-9898/AIO_Final_Project.git
+
+<span class="comment"># Navigate to project directory</span>
+<span class="command">cd</span> AIO_Final_Project
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step 2: Environment -->
+    <section class="guide-section">
+        <div class="container">
+            <div class="guide-card">
+                <h3>
+                    <span class="step-num">2</span>
+                    Configure Environment Variables
+                </h3>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+                    Create a <code>.env</code> file in the project root with your API keys:
+                </p>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-filename">.env</span>
+                        <button class="code-copy" onclick="copyCode(this)">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="code-body">
+<span class="comment"># Required API Keys</span>
+<span class="string">MAPBOX_TOKEN</span>=your_mapbox_token_here
+<span class="string">GEMINI_API_KEY</span>=your_gemini_api_key_here
+
+<span class="comment"># Optional: Override default database credentials</span>
+<span class="comment"># POSTGRES_USER=postgres</span>
+<span class="comment"># POSTGRES_PASSWORD=postgres</span>
+<span class="comment"># POSTGRES_DB=logistics</span>
+<span class="comment"># NEO4J_AUTH=neo4j/password</span>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: var(--space-2xl); margin-bottom: var(--space-lg);">Environment Variables Reference</h4>
+                <table class="env-table">
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>MAPBOX_TOKEN</code></td>
+                            <td><span class="required-badge">Required</span></td>
+                            <td>Mapbox GL access token for interactive maps</td>
+                        </tr>
+                        <tr>
+                            <td><code>GEMINI_API_KEY</code></td>
+                            <td><span class="required-badge">Required</span></td>
+                            <td>Google Gemini API key for AI features</td>
+                        </tr>
+                        <tr>
+                            <td><code>DATABASE_URL</code></td>
+                            <td><span class="optional-badge">Auto</span></td>
+                            <td>PostgreSQL connection string (auto-configured by Docker)</td>
+                        </tr>
+                        <tr>
+                            <td><code>REDIS_URL</code></td>
+                            <td><span class="optional-badge">Auto</span></td>
+                            <td>Redis connection string (auto-configured by Docker)</td>
+                        </tr>
+                        <tr>
+                            <td><code>NEO4J_URL</code></td>
+                            <td><span class="optional-badge">Auto</span></td>
+                            <td>Neo4j bolt URL (default: bolt://neo4j:7687)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step 3: Start -->
+    <section class="guide-section">
+        <div class="container">
+            <div class="guide-card">
+                <h3>
+                    <span class="step-num">3</span>
+                    Start the Platform
+                </h3>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+                    Use the management script to start all services:
+                </p>
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-filename">Terminal</span>
+                        <button class="code-copy" onclick="copyCode(this)">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="code-body">
+<span class="comment"># Make start script executable (first time only)</span>
+<span class="command">chmod</span> <span class="flag">+x</span> start.sh
+
+<span class="comment"># Start all services</span>
+<span class="command">./start.sh</span> start
+                    </div>
+                </div>
+
+                <p style="color: var(--text-secondary); margin: var(--space-lg) 0;">
+                    The platform will automatically:
+                </p>
+                <ul class="content-list">
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Pull and build all Docker images</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Initialize PostgreSQL, Redis, and Neo4j databases</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Start the FastAPI backend with hot reload</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Launch the Next.js frontend</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Run the vehicle simulation engine</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step 4: Access -->
+    <section class="guide-section">
+        <div class="container">
+            <div class="guide-card">
+                <h3>
+                    <span class="step-num">4</span>
+                    Access the Application
+                </h3>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+                    Once all services are running, open your browser to access:
+                </p>
+
+                <div class="access-grid">
+                    <a href="http://localhost:3000" target="_blank" class="access-item">
+                        <i class="fas fa-desktop"></i>
+                        <h4>Dashboard</h4>
+                        <span>localhost:3000</span>
+                    </a>
+                    <a href="http://localhost:8000/docs" target="_blank" class="access-item">
+                        <i class="fas fa-book"></i>
+                        <h4>API Docs</h4>
+                        <span>localhost:8000/docs</span>
+                    </a>
+                    <a href="http://localhost:7474" target="_blank" class="access-item">
+                        <i class="fas fa-diagram-project"></i>
+                        <h4>Neo4j Browser</h4>
+                        <span>localhost:7474</span>
+                    </a>
+                    <a href="http://localhost:8000/health" target="_blank" class="access-item">
+                        <i class="fas fa-heart-pulse"></i>
+                        <h4>Health Check</h4>
+                        <span>localhost:8000/health</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Management Commands -->
+    <section class="guide-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Reference</span>
+                <h2 class="section-title">Management Commands</h2>
+                <p class="section-subtitle">All available commands for managing the platform</p>
+            </div>
+
+            <div class="guide-card">
+                <h4 style="margin-bottom: var(--space-lg);">Service Management</h4>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>./start.sh start</code>
+                        <span>Start all services</span>
+                    </div>
+                    <div class="command-item">
+                        <code>./start.sh stop</code>
+                        <span>Stop all services</span>
+                    </div>
+                    <div class="command-item">
+                        <code>./start.sh restart</code>
+                        <span>Restart all services</span>
+                    </div>
+                    <div class="command-item">
+                        <code>./start.sh status</code>
+                        <span>Check service health</span>
+                    </div>
+                </div>
+
+                <h4 style="margin: var(--space-2xl) 0 var(--space-lg);">Development</h4>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>./start.sh dev</code>
+                        <span>Start with live reload</span>
+                    </div>
+                    <div class="command-item">
+                        <code>./start.sh logs</code>
+                        <span>Follow all logs</span>
+                    </div>
+                    <div class="command-item">
+                        <code>./start.sh logs backend</code>
+                        <span>Follow specific service logs</span>
+                    </div>
+                    <div class="command-item">
+                        <code>./start.sh build</code>
+                        <span>Rebuild all images</span>
+                    </div>
+                </div>
+
+                <h4 style="margin: var(--space-2xl) 0 var(--space-lg);">Database Access</h4>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>./start.sh db</code>
+                        <span>Open PostgreSQL CLI</span>
+                    </div>
+                    <div class="command-item">
+                        <code>./start.sh redis</code>
+                        <span>Open Redis CLI</span>
+                    </div>
+                    <div class="command-item">
+                        <code>./start.sh clean</code>
+                        <span>Remove all containers & volumes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section class="guide-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Help</span>
+                <h2 class="section-title">Troubleshooting</h2>
+                <p class="section-subtitle">Common issues and their solutions</p>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4><i class="fas fa-exclamation-triangle"></i> Port Already in Use</h4>
+                <p>If you see an error about ports being in use, find and kill the process:</p>
+                <div class="code-container" style="margin-top: var(--space-sm);">
+                    <div class="code-body">
+<span class="command">lsof</span> <span class="flag">-i</span> :3000
+<span class="command">kill</span> <span class="flag">-9</span> &lt;PID&gt;
+                    </div>
+                </div>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4><i class="fas fa-exclamation-triangle"></i> Docker Memory Issues</h4>
+                <p>Increase Docker memory allocation in Docker Desktop settings to at least 8GB for smooth operation.</p>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4><i class="fas fa-exclamation-triangle"></i> Database Connection Errors</h4>
+                <p>Reset all databases and try again:</p>
+                <div class="code-container" style="margin-top: var(--space-sm);">
+                    <div class="code-body">
+<span class="command">./start.sh</span> clean
+<span class="command">./start.sh</span> start
+                    </div>
+                </div>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4><i class="fas fa-exclamation-triangle"></i> Mapbox Not Loading</h4>
+                <p>Verify your MAPBOX_TOKEN is set correctly in .env and has the required scopes (styles:read, fonts:read).</p>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4><i class="fas fa-exclamation-triangle"></i> WebSocket Connection Failed</h4>
+                <p>Ensure the backend is fully started by checking the health endpoint at <code>http://localhost:8000/health</code>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Next Steps -->
+    <section class="content-section" style="background: var(--gradient-hero); text-align: center;">
+        <div class="container">
+            <h2 class="section-title">You're All Set!</h2>
+            <p class="section-subtitle mb-xl">
+                Now that the platform is running, explore the features or dive into the API documentation.
+            </p>
+            <div class="hero-buttons" style="justify-content: center;">
+                <a href="../index.html#features" class="btn btn-primary">
+                    <i class="fas fa-compass"></i>
+                    Explore Features
+                </a>
+                <a href="api-reference.html" class="btn btn-secondary">
+                    <i class="fas fa-code"></i>
+                    API Reference
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 Logistics AI Platform. Built by <a href="https://github.com/Div-9898" target="_blank">Divyansh</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-container').querySelector('.code-body');
+            const text = codeBlock.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

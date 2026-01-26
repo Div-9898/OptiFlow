@@ -56,6 +56,11 @@ import {
 } from 'recharts';
 import { cn } from '@/lib/utils';
 import PageLayout from '@/components/dashboard/PageLayout';
+import {
+  EthicsKPIDashboard,
+  FrameworkGauges,
+  DecisionFeed
+} from '@/components/ethics';
 
 // Types
 interface DilemmaOption {
@@ -581,6 +586,18 @@ export default function EthicsSimulatorPage() {
             </div>
           </div>
         </motion.div>
+
+        {/* KPI Dashboard */}
+        <div className="mb-4">
+          <EthicsKPIDashboard
+            decisionsAnalyzed={simulationHistory.length + 247}
+            avgEthicalScore={simulationResult?.successRate || 0.82}
+            simulationsRun={simulationHistory.length * 1000 + 5000}
+            consensusRate={78}
+            stakeholdersConsidered={85}
+            frameworksApplied={4}
+          />
+        </div>
 
         {/* Framework Info Panel */}
         <AnimatePresence>
@@ -1366,6 +1383,21 @@ export default function EthicsSimulatorPage() {
               </div>
             )}
           </motion.div>
+        </div>
+
+        {/* Bottom Row - Framework Gauges & Decision Feed */}
+        <div className="grid grid-cols-12 gap-6 mt-6">
+          <div className="col-span-6">
+            <FrameworkGauges
+              utilitarian={selectedOption && currentScenario?.options.find(o => o.id === selectedOption)?.scores.utilitarian || 0.75}
+              deontological={selectedOption && currentScenario?.options.find(o => o.id === selectedOption)?.scores.deontological || 0.68}
+              virtue={selectedOption && currentScenario?.options.find(o => o.id === selectedOption)?.scores.virtue || 0.72}
+              care={selectedOption && currentScenario?.options.find(o => o.id === selectedOption)?.scores.care || 0.80}
+            />
+          </div>
+          <div className="col-span-6">
+            <DecisionFeed />
+          </div>
         </div>
       </div>
     </PageLayout>

@@ -261,6 +261,9 @@ export interface SocketEvents {
   'risk:alert': RiskAlert;
   'metrics:update': DashboardMetrics;
   'iot:sensor': IoTSensorData;
+  'vehicles:update': any;
+  'stats:update': any;
+  'alert': RiskAlert;
 }
 
 export interface VehiclePositionUpdate {
@@ -302,6 +305,7 @@ export interface OptimizationComplete {
 }
 
 export interface RiskAlert {
+  id?: string;
   vehicleId: string;
   riskLevel: RiskLevel;
   factors: RiskFactor[];
